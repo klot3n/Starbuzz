@@ -26,7 +26,7 @@ class StarbuzzDatabaseHelper(
     }
 
     private fun insertDrink(db: SQLiteDatabase, name: String, description: String, resourceId: Int) {
-        lateinit var drinkValues: ContentValues
+        val drinkValues = ContentValues() //kotlin.UninitializedPropertyAccessException: lateinit property drinkValues has not been initialized
         drinkValues.put("NAME", name)
         drinkValues.put("DESCRIPTION", description)
         drinkValues.put("IMAGE_RESOURCE_ID", resourceId)
