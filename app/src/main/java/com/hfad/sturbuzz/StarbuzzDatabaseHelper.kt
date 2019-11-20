@@ -1,24 +1,21 @@
 package com.hfad.sturbuzz
 
-import android.content.ClipDescription
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.os.FileObserver.CREATE
 
-class StarbuzzDatabaseHelper(
-    context: Context,
-    DATABASE_NAME: String?,
-    factory: SQLiteDatabase.CursorFactory?,
-    DATABASE_VERSION: Int
-) : SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
+class StarbuzzDatabaseHelper(context: Context)
+    : SQLiteOpenHelper(context, DATABASE_NAME,
+    null, DATABASE_VERSION) {
 
-    var DB_NAME = "starbuzz"
-    var DB_VERSION = 2
+    companion object{
+        private val DATABASE_NAME = "starbuzz.db"
+        private val DATABASE_VERSION = 2
+    }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        updateMyDatabase(db, 0, DB_VERSION)
+        updateMyDatabase(db, 0, DATABASE_VERSION)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -39,7 +36,7 @@ class StarbuzzDatabaseHelper(
                     + "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + "NAME TEXT, "
                     + "DESCRIPTION TEXT, "
-                    + "IMAGE_RESOURCE_ID INTEGER)"
+                    + "IMAGE_RESOURCE_ID INTEGER) "
             )
             insertDrink(db, "Latte", "Espresso and steamed milk", R.drawable.latte)
             insertDrink(db, "Cappuccino", "Espresso,hot milk, and a steamed milk foam", R.drawable.cappuccino)

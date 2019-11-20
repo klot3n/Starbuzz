@@ -33,10 +33,12 @@ class TopLevelActivity:Activity() {
 
     fun setupFavoritesListView(){
         try {
-            val starbuzzDatabaseHelper=StarbuzzDatabaseHelper(this,null,null,2)
+            val starbuzzDatabaseHelper=StarbuzzDatabaseHelper(this)
             db=starbuzzDatabaseHelper.readableDatabase
-            favoritesCursor = db.query("DRINK", arrayOf("_id","NAME"),
+            favoritesCursor = db.run {
+                query("DRINK", arrayOf("_id","NAME"),
                 "FAVORITE=1",null,null,null,null)
+            }
             list_favorites.adapter=SimpleCursorAdapter(
                 this, android.R.layout.simple_list_item_1,
                 favoritesCursor, arrayOf("NAME"), intArrayOf(android.R.id.text1), 0
@@ -44,12 +46,10 @@ class TopLevelActivity:Activity() {
         } catch (e: Exception) {
             Toast.makeText(this, "Database unavialable", Toast.LENGTH_SHORT).show()
         }
-        list_favorites.setOnItemClickListener {parent, view, position, id ->
-            if (position==0) {
-                val i = Intent(this, DrinkCategoryActivity::class.java)
+        list_favorites.setOnItemClickListener { _, _, _, id ->
+                val i = Intent(this, DrinkActivity::class.java)
                 i.putExtra("EXTRA_DRINKID",id)
                 startActivity(i)
-            }
         }
     }
 

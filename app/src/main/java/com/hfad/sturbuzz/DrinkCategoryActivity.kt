@@ -5,8 +5,6 @@ import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.SimpleCursorAdapter
 import kotlinx.android.synthetic.main.activity_drink_category.*
 import android.database.sqlite.SQLiteException
@@ -32,12 +30,12 @@ class DrinkCategoryActivity : Activity() {
 //////////////////////////////////////////////////////////////////////////////////////////
 
         try {
-            db = StarbuzzDatabaseHelper(this, null, null, 2)
+            db = StarbuzzDatabaseHelper(this)
                 .readableDatabase
-            cursor = db.query(
-                "DRINK", arrayOf("_id", "NAME"),
-                null, null, null, null, null
-            )
+            cursor = db.run {
+                query("DRINK", arrayOf("_id", "NAME"),
+                    null, null, null, null, null)
+            }
             list_drinks.adapter = SimpleCursorAdapter(
                 this, android.R.layout.simple_list_item_1,
                 cursor, arrayOf("NAME"), intArrayOf(android.R.id.text1), 0
